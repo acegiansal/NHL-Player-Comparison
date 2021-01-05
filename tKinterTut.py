@@ -1,4 +1,5 @@
 import tkinter as tk
+from tkinter import ttk
 
 input_list = [
     "First Name:", 
@@ -14,6 +15,7 @@ label_list = []
 entry_list = []
 
 window = tk.Tk()
+window.configure(bg='pink')
 window.title("TEST for ENTRY")
 
 input_frame = tk.Frame(relief=tk.SUNKEN, borderwidth = 4)
