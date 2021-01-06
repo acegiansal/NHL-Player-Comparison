@@ -12,11 +12,11 @@ def jprint(obj):
 ## For Roster:
 # https://statsapi.web.nhl.com/api/v1/teams/9/roster
 
-response = req.get("https://statsapi.web.nhl.com/api/v1/people/8476459/stats?stats=careerRegularSeason")
+response = req.get("https://statsapi.web.nhl.com/api/v1/teams/9/roster")
 
 print(response.status_code)
-jprint(response.json())
+#jprint(response.json())
 
-#json_data = json.loads(response.text)["people"][0]
-
+json_data = json.loads(response.text)["roster"]
+print((json_data[0]))
 #print(json_data["birthCity"])
