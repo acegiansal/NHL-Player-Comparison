@@ -24,7 +24,7 @@ def display_players(resultPanel):
     players = { # Place holder for function that finds the resulting players names and IDs
         'quantity': 2, 
         'names': ['Mika Zibanejad', 'Zdeno Chara'],
-        'ID': ['1', '2']
+        'id': ['1', '2']
     }  
     sel_player_names = players['names']
     if players['quantity'] == 0:
