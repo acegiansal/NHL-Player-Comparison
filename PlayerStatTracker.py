@@ -10,6 +10,7 @@ def find_player(name):
         'team': [],
         'number': []
     }
+
     target = name.lower()
     team_api = req.get("https://statsapi.web.nhl.com/api/v1/teams/")
     franchises = json.loads(team_api.text)["teams"]
@@ -30,10 +31,6 @@ def find_player(name):
 def get_stats(player_info: dict) -> dict:
     print('hello')
     player_stats = {}
-    
-
-
-
                     
 
 if __name__ == "__main__":
