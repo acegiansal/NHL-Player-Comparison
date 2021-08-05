@@ -13,7 +13,7 @@ final_player_info = {
     'team': [],
     'number': []
     }
-
+CURRENT_SEASON = "2020/2021"
 
 def _clear_frame (frame) :
     """
@@ -21,7 +21,7 @@ def _clear_frame (frame) :
     the frame intact
     """
     _list = frame.winfo_children()
-    print("Clearing frame")
+    print("Clearing entire frame")
 
     for item in _list :
         if item.winfo_children() :
@@ -88,7 +88,7 @@ def display_selected_players():
 def _find_latest_season():
     now = datetime.datetime.now()
     if now.month >= 10:
-        print (now.month)
+        print (f"Currnet Season: {now.month}")
         return now.year + 1
     else:
         return now.year
@@ -96,21 +96,23 @@ def _find_latest_season():
 def find_stats(comparePanel, seasonStr: str):
     season_clean = seasonStr.replace('/','')
     if (
-    not season_clean.isdecimal() or 
-    len(season_clean) != 8 or
-    season_clean[-4:] > str(_find_latest_season()) or
-    int(season_clean[-4:]) - int(season_clean[:4]) != 1):
+        not season_clean.isdecimal() or 
+        len(season_clean) != 8 or
+        season_clean[-4:] > str(_find_latest_season()) or
+        int(season_clean[-4:]) - int(season_clean[:4]) != 1):
+
         messagebox.showerror("Invalid Input", "Invalid Year")
     else:
         #messagebox.showerror("It works", season_clean)
-        # stats = find_player_stats(final_player_info['id'])
-        stats = {}
+        stats = find_player_stats(final_player_info['id'], CURRENT_SEASON)
         display_stats(comparePanel, stats)
 
 def display_stats(comparePanel, stats: dict):
+    '''
     stats = {
         'quantity': 3, 
         'names': ['Thomas Chabot', 'Cale Makar', 'Quinn Hughes'],
+        'age': [24, 21, 22],
         'num': ['72', '8', '43'],
         'team': ['OTT', 'COL', 'VAN'],
         'pos': ['D', 'D', 'D'],
@@ -121,6 +123,7 @@ def display_stats(comparePanel, stats: dict):
         'pm': [-18,12,-10],
         'pim': [42,12,22]
     }
+    '''
     _clear_frame(comparePanel)
     comparePanel.rowconfigure(0, weight=1, minsize=100)
 
@@ -209,7 +212,7 @@ season_frm.grid(row=1, column=0, columnspan=2, sticky='nesw')
 season_label = tk.Label(master=season_frm, text='Season:')
 season_label.grid(row=0, column=0, sticky='nes', padx=3, pady=3)
 season_entry = tk.Entry(master=season_frm, width = 20)
-season_entry.insert(0, "2020/2021")
+season_entry.insert(0, CURRENT_SEASON)
 season_entry.grid(row=0,column=1, sticky='w')
 season_but = tk.Button(master=season_frm, text='Find Stats!', command=lambda: find_stats(compare_tab, season_entry.get()))
 season_but.grid(row=0,column=2, sticky='nesw', padx=5, pady=5)
@@ -226,8 +229,7 @@ about_tab = ttk.Frame(tab_control, borderwidth=3)
 tab_control.add(about_tab, text='About')
 
 about_str = """Made by:
-    Giancarlo Salvador (github/acegiansal)
-    Carmen Lamprecht (github/carmenlamprecht1234)\n
+    Giancarlo Salvador (https://github.com/acegiansal)\n
     1/6/2021"""
 
 about_label = tk.Label(
