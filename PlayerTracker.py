@@ -156,7 +156,8 @@ def compare_stat(stats: list, index: int) -> str:
     for p in stats:
         if type(p) != int:
             return ('grey')
-    if stats[0] == stats[1] and stats[1] == stats[2]:
+
+    if stats.count(stats[index]) == len(stats):
         return(COLOUR['mid'])
     elif stats.count(stats[index]) > 1:
         return(COLOUR['mid'])
