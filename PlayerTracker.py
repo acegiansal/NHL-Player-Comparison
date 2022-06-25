@@ -13,7 +13,7 @@ final_player_info = {
     'team': [],
     'number': []
     }
-CURRENT_SEASON = "2020/2021"
+CURRENT_SEASON = "2021/2022"
 
 def _clear_frame (frame) :
     """
@@ -94,6 +94,7 @@ def _find_latest_season():
         return now.year
 
 def find_stats(comparePanel, seasonStr: str):
+    print(f"Season selected: {seasonStr}")
     season_clean = seasonStr.replace('/','')
     if (
         not season_clean.isdecimal() or 
@@ -104,7 +105,7 @@ def find_stats(comparePanel, seasonStr: str):
         messagebox.showerror("Invalid Input", "Invalid Year")
     else:
         #messagebox.showerror("It works", season_clean)
-        stats = find_player_stats(final_player_info['id'], CURRENT_SEASON)
+        stats = find_player_stats(final_player_info['id'], season_clean)
         display_stats(comparePanel, stats)
 
 def display_stats(comparePanel, stats: dict):
@@ -168,81 +169,83 @@ def compare_stat(stats: list, index: int) -> str:
     else:
         return(COLOUR['low'])
 
-# Creating Root Window
-root_window = tk.Tk()
-root_window.configure(bg='pink')
-root_window.title("NHL Player Tracker")
-#root_window.geometry("500x500")
 
-tab_control = ttk.Notebook(root_window)
+if __name__=="__main__":
+    # Creating Root Window
+    root_window = tk.Tk()
+    root_window.configure(bg='pink')
+    root_window.title("NHL Player Tracker")
+    #root_window.geometry("500x500")
 
-########## Adds Search (1st) tab
-search_tab = ttk.Frame(tab_control, borderwidth=3)
-tab_control.add(search_tab, text='Search')
+    tab_control = ttk.Notebook(root_window)
 
-# Input Frame
-srch_inp_frm = tk.Frame(master=search_tab)
-player_entry = tk.Entry(master= srch_inp_frm, width=40)
-search_button = tk.Button(
-    master=srch_inp_frm, 
-    text='Search', 
-    command=lambda: display_players(result_frm, player_entry.get())
-)
-player_entry.grid(row=0, column=0, padx=5, pady=5)
-search_button.grid(row=0, column=1, padx=5, pady=5)
-srch_inp_frm.pack(fill='both')
+    ########## Adds Search (1st) tab
+    search_tab = ttk.Frame(tab_control, borderwidth=3)
+    tab_control.add(search_tab, text='Search')
 
-# Search Result frame
-srch_res_frm = tk.Frame(master=search_tab, bg= 'pink', relief=tk.SUNKEN, borderwidth=2)
-srch_res_frm.pack(fill='both')
-srch_res_frm.columnconfigure(0, weight=1, minsize=100)
-srch_res_frm.columnconfigure(1, weight=1, minsize=100)
-srch_res_frm.rowconfigure(0, weight=1, minsize=150)
-
-# Already selected players Frame
-result_frm = tk.Frame(master=srch_res_frm, relief=tk.GROOVE, borderwidth=3)
-result_frm.grid(row=0, column=0, sticky='nesw')
-sel_frm = tk.Frame(master=srch_res_frm, relief=tk.GROOVE, borderwidth=3)
-sel_label = tk.Label(master=sel_frm, text="Selected Players:", font=('Helvetica', 14, 'bold'))
-sel_label.pack(fill='both')
-sel_frm.grid(row=0, column=1, sticky='new')
-
-# Season select frame
-season_frm = tk.Frame(master=srch_res_frm, borderwidth = 2, relief=tk.GROOVE)
-season_frm.grid(row=1, column=0, columnspan=2, sticky='nesw')
-season_label = tk.Label(master=season_frm, text='Season:')
-season_label.grid(row=0, column=0, sticky='nes', padx=3, pady=3)
-season_entry = tk.Entry(master=season_frm, width = 20)
-season_entry.insert(0, CURRENT_SEASON)
-season_entry.grid(row=0,column=1, sticky='w')
-season_but = tk.Button(master=season_frm, text='Find Stats!', command=lambda: find_stats(compare_tab, season_entry.get()))
-season_but.grid(row=0,column=2, sticky='nesw', padx=5, pady=5)
-
-######### END OF SEARCH TAB ##########
-######### START OF COMPARISON TAB #########
-compare_tab = ttk.Frame(tab_control, borderwidth=3)
-tab_control.add(compare_tab, text='Compare')
-comp_inst = tk.Label(master=compare_tab, text='Search for players to see their stats here')
-comp_inst.pack(fill='both')
-
-######### START OF ABOUT TAB #########
-about_tab = ttk.Frame(tab_control, borderwidth=3)
-tab_control.add(about_tab, text='About')
-
-about_str = """Made by:
-    Giancarlo Salvador (https://github.com/acegiansal)\n
-    1/6/2021"""
-
-about_label = tk.Label(
-    master=about_tab, 
-    text=about_str
+    # Input Frame
+    srch_inp_frm = tk.Frame(master=search_tab)
+    player_entry = tk.Entry(master= srch_inp_frm, width=40)
+    search_button = tk.Button(
+        master=srch_inp_frm,
+        text='Search',
+        command=lambda: display_players(result_frm, player_entry.get())
     )
-about_label.grid(row=0, column=0, sticky='nesw')
+    player_entry.grid(row=0, column=0, padx=5, pady=5)
+    search_button.grid(row=0, column=1, padx=5, pady=5)
+    srch_inp_frm.pack(fill='both')
 
-###### END OF ABOUT TAB
+    # Search Result frame
+    srch_res_frm = tk.Frame(master=search_tab, bg= 'pink', relief=tk.SUNKEN, borderwidth=2)
+    srch_res_frm.pack(fill='both')
+    srch_res_frm.columnconfigure(0, weight=1, minsize=100)
+    srch_res_frm.columnconfigure(1, weight=1, minsize=100)
+    srch_res_frm.rowconfigure(0, weight=1, minsize=150)
 
-tab_control.pack(fill='both')
+    # Already selected players Frame
+    result_frm = tk.Frame(master=srch_res_frm, relief=tk.GROOVE, borderwidth=3)
+    result_frm.grid(row=0, column=0, sticky='nesw')
+    sel_frm = tk.Frame(master=srch_res_frm, relief=tk.GROOVE, borderwidth=3)
+    sel_label = tk.Label(master=sel_frm, text="Selected Players:", font=('Helvetica', 14, 'bold'))
+    sel_label.pack(fill='both')
+    sel_frm.grid(row=0, column=1, sticky='new')
+
+    # Season select frame
+    season_frm = tk.Frame(master=srch_res_frm, borderwidth = 2, relief=tk.GROOVE)
+    season_frm.grid(row=1, column=0, columnspan=2, sticky='nesw')
+    season_label = tk.Label(master=season_frm, text='Season:')
+    season_label.grid(row=0, column=0, sticky='nes', padx=3, pady=3)
+    season_entry = tk.Entry(master=season_frm, width = 20)
+    season_entry.insert(0, CURRENT_SEASON)
+    season_entry.grid(row=0,column=1, sticky='w')
+    season_but = tk.Button(master=season_frm, text='Find Stats!', command=lambda: find_stats(compare_tab, season_entry.get()))
+    season_but.grid(row=0,column=2, sticky='nesw', padx=5, pady=5)
+
+    ######### END OF SEARCH TAB ##########
+    ######### START OF COMPARISON TAB #########
+    compare_tab = ttk.Frame(tab_control, borderwidth=3)
+    tab_control.add(compare_tab, text='Compare')
+    comp_inst = tk.Label(master=compare_tab, text='Search for players to see their stats here')
+    comp_inst.pack(fill='both')
+
+    ######### START OF ABOUT TAB #########
+    about_tab = ttk.Frame(tab_control, borderwidth=3)
+    tab_control.add(about_tab, text='About')
+
+    about_str = """Made by:
+        Giancarlo Salvador (https://github.com/acegiansal)\n
+        1/6/2021"""
+
+    about_label = tk.Label(
+        master=about_tab,
+        text=about_str
+        )
+    about_label.grid(row=0, column=0, sticky='nesw')
+
+    ###### END OF ABOUT TAB
+
+    tab_control.pack(fill='both')
 
 
-# Running main window
-root_window.mainloop()
+    # Running main window
+    root_window.mainloop()

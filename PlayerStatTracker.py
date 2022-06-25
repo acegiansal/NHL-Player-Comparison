@@ -93,7 +93,7 @@ def find_player_stats(player_id_list: list, YEAR: str) -> dict:
                 player_clean_stats['team'].append(team)
                 break
 
-        player_api = req.get(f"https://statsapi.web.nhl.com/api/v1/people/{id}/stats?stats=statsSingleSeason&season=20202021")
+        player_api = req.get(f"https://statsapi.web.nhl.com/api/v1/people/{id}/stats?stats=statsSingleSeason&season={YEAR}")
         player_mess_stats = json.loads(player_api.text)["stats"][0]["splits"][0]["stat"]
         player_clean_stats['gp'].append(player_mess_stats['games'])
         player_clean_stats['g'].append(player_mess_stats['goals'])
